@@ -1,0 +1,17 @@
+{
+  "name": "gitorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "husky": {
+    "hooks": {
+      "postinstall": "node merge.js"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gity": "^1.0.5",
+    "husky": "^1.1.0"
+  }
+}
