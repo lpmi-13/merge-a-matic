@@ -21,6 +21,19 @@ This will automatically run a script to attempt to merge the
 'develop' branch into the 'master' branch. Since there are 
 conflicts, these will have to be resolved manually.
 
+## you have a conflict!
+
+you probably see something like this:
+```
+>>>>>>>>HEAD
+this is added line
+=======
+this is original line
+<<<<<<<<7f7rh4nrf
+```
+
+Don't worry though, we'll walk through resolving it step by step.
+
 ## check your work
 
 run 'npm run check' to see how you did!
