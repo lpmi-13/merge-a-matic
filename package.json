@@ -13,5 +13,8 @@
   "devDependencies": {
     "gity": "^1.0.5",
     "husky": "^1.1.0"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
   }
 }
