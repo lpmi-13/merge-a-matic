@@ -1,0 +1,14 @@
+#!/bin/sh
+RESULT=$(git diff -w --check --cached | awk -F ":" '{print $1}' | uniq | sort)
+
+if [ -n "$RESULT" ]; then
+  echo "Sorry, it looks like there are still change markers in the following files:"
+  for result in $RESULT
+  do
+    echo $result
+  done
+  echo "Please fix these and try again"
+  exit 1
+else
+  echo "You successfully fixed the merge conflicts! Well done!"
+fi
