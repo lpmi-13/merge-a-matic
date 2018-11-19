@@ -1,17 +1,8 @@
 {
-  "name": "gitorial",
+  "name": "merge-a-matic",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "husky": {
-    "hooks": {
-      "postinstall": "node merge.js"
-    }
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "gity": "^1.0.5",
-    "husky": "^1.1.0"
-  }
+  "description": "a micromaterial to help learners resolve merge conflicts",
+  "main": "server.js",
+  "author": "Adam Leskis",
+  "license": "ISC"
 }
