@@ -1,9 +1,9 @@
 const http = require('http')
-const port = 3000
+const port = 3001
 
 const requestHandler = (request, response) => {
   console.log(request.url)
-  response.end('Hello Node.js Server!')
+  response.end('this is the response')
 }
 
 const server = http.createServer(requestHandler)
