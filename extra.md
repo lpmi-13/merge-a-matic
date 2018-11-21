@@ -12,6 +12,6 @@ One simple thing to try is updating the response from the server.
 
 ...or even add a different endpoint (eg, `app.get('/extra', ...)`)
 
-so much fun stuff to try!
+Express is used in a lot of different projects.
 
-how exciting!
+so much fun stuff to try!

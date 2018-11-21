@@ -2,8 +2,8 @@
 
 One of the difficult parts of collaboration is dealing with merge
 conflicts. This can happen, for example, when Person A alters
-a file (eg, `server.js`), and a second person also alters the same
-file.
+a file (eg, `server.js`) on Person A's computer, and Person B also
+alters the same file on Person B's computer.
 
 When one of them pushes back to the repository, Person B's
 push will be rejected, and when Person B pulls, they will see
@@ -18,43 +18,33 @@ exercise in your terminal.
 ## setup
 
 clone the project and type `npm install` to make sure the
-checking scripts (here, using husky hooks) are installed.
+checking scripts (here, using husky hooks) are installed. These
+are used to check your work after you've resolved the merge and
+give you some feedback on how you did.
 
-Then type `git merge origin/develop`. You could also type
-`git checkout develop`, then `git checkout master` to merge
-from a local copy of `develop` that you set up on your
-machine, but this isn't necessary.
+Then type `git merge origin/develop`.
 
-(we're using `git merge origin/develop` instead of `git pull`, but for this
-exercise it has the same result. The command means,
+(NOTE: You could also type `git checkout develop`, then
+`git checkout master`, then `git merge develop` to merge
+from a local copy of the `develop` branch that you set
+up on your machine, but this isn't necessary.)
+
+we're using `git merge origin/develop` instead of `git pull`,
+but for this exercise it has the same result. The command means,
 "merge the develop branch from the remote repository into
-my current branch")
+my current branch"
 
 ## you have a conflict!
-
-The first step will be a prompt like this:
-```
-Merge remote-tracking branch 'origin/develop'
-
-# Please enter a commit message to explain why this merge is necessary,
-# especially if it merges an updated upstream into a topic branch.
-#
-# Lines starting with '#' will be ignored, and an empty message aborts
-# the commit.
-```
-
-This is just git suggesting you add in a reason why you are merging these two branches, so the default message is probably fine.
-Just save and close the file.
-
-Now let's move on to our actual conflict!
 
 you will see something like this:
 
 ```
 Auto-merging server.js
-CONFLICT (add/add): Merge conflict in server.js
+CONFLICT (content): Merge conflict in server.js
 Auto-merging extra.md
-CONFLICT (add/add): Merge conflict in extra.md
+CONFLICT (content): Merge conflict in extra.md
+Auto-merging README.md
+Automatic merge failed; fix conflicts and then commit the result.
 ```
 
 ah, looks like we have a conflict in `server.js` and `extra.md`...
@@ -74,8 +64,10 @@ You have unmerged paths.
 Unmerged paths:
   (use "git add <file>..." to mark resolution)
 
-        both added:      extra.md
-        both added:      server.js
+	both modified:   extra.md
+	both modified:   server.js
+
+no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
 We can see here that if anything goes wrong, we can use 
@@ -83,47 +75,42 @@ We can see here that if anything goes wrong, we can use
 
 ## the easy example
 
-so let's open the file `server.js`, and you should see the following:
+so let's open the file `server.js`, and you should see the
+following:
 
 ```
 <<<<<<< HEAD
 const http = require('http')
-const port = 3000
+const port = 3001
 
 const requestHandler = (request, response) => {
   console.log(request.url)
-  response.end('Hello Node.js Server!')
+  response.end('this is the response')
 }
-
-const server = http.createServer(requestHandler)
-
-server.listen(port, (err) => {
-  if (err) {
-    return console.log('something bad happened', err)
-  }
-
-  console.log(`server is listening on ${port}`)
-})
 =======
 const express = require('express')
 const app = express()
 const port = 3000
 
 app.get('/', (req, res) => res.send('Hello World!'))
+>>>>>>> origin/develop
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
->>>>>>> origin/develop
 ```
 
-This is an easy example, since the two files are completely 
-different, and so there's no overlap of similar content to 
-make things tricky.
+This is an easy example, since the two files are mostly completely
+different, and so git thinks there's only a little overlap of
+similar content right at the bottom to make things tricky.
+
+We'll walk through resolving this conflict step by step.
 
 The first thing to notice is the line right at the top:
 `<<<<<<< HEAD`
+
 This tells us where the conflict starts, and also the branch it
-refers to. Here, `HEAD` refers to the current place that our
-`master` branch is at, so it's basically the same as `master`.
+refers to. Here, `HEAD` refers to the place that our
+current branch is at, so it's basically the same as our local
+copy of the `master` branch.
 
 The next important line is 
 `=======`
@@ -132,24 +119,26 @@ This is telling us where the first part of the conflict ends. So
 everything above it is in our current branch's file, and everything
 below it is in the develop branch's file.
 
-The final interesting line is right at the bottom:
+The final interesting line is right near the bottom:
 `>>>>>>> origin/develop`
 
 This tells us where the conflict ends. This is a simple example
 since everything from the first marker line to the middle line is
 the version in `master`, and everything from the middle line to the
-final line is the version in `develop`. So to resolve the conflict in
-this file, since the two files are completely different and we
-probably only want one version or the other, just keep the version
-from `develop` using express.
+final line is the version in `develop`.
 
-In our example here, you want to, delete everything between
+So to resolve the conflict in this file, since the two files
+are completely different and we probably only want one version or
+the other, just keep the version from `origin/develop` using
+express.
+
+In our example here, you should delete everything between
 `<<<<<<< HEAD` and `=======`, including those lines themselves.
 Remember to also delete the final marker line `>>>>>>> origin/develop`.
 (git has actually written those marker lines into our file, so we
 need to delete them manually)
 
-So that file's conflict is now fixed, let's move on to `extra.md`...
+That file's conflict is now fixed, let's move on to `extra.md`...
 
 ## another still simple example
 
@@ -161,58 +150,57 @@ looks like:
 
 ```
 <<<<<<< HEAD
+It uses the http library to set up a simple server.
 =======
-Express is super awesome and lets us do a lot of cool
-stuff.
-
+It uses the amazing express library to set up a simple server.
 >>>>>>> origin/develop
 ```
 
 Here are our three marker lines again, so we know where the
-conflict is and what the content of it is. The reason we don't
-have anything between the first line and the second line is
-because something was added to the file in the `develop` branch
-that didn't exist in the `master` branch, so git isn't sure
-which version we want.
+conflict is and what the content of it is.
 
-In this case, since the awesomeness of express is fairly obvious,
-we can delete everything between the second and third marker
+In this case, since we want to use the awesomeness of express,
+we can delete everything between the first and second marker
 lines (as well as the three marker lines themselves).
 
-So in this case we're deleting everything on these 6 lines. Easy,
-right?!?!
+So in this case we're deleting everything except the one line.
+
+```
+It uses the amazing express library to set up a simple server.
+```
+
+Easy, right?!?!
 
 ...now on to the second conflict in the file:
 
 ```
 <<<<<<< HEAD
-The usual port is 3000, but it could easily be 4000.
+The usual port is 3000, but it could easily be 3001.
 =======
 The usual port is 3000, but it could easily be 4001.
 >>>>>>> origin/develop
 ```
 
 Here it looks like exactly one thing was changed in the `develop`
-branch. The port number is `4001` instead of `4000`.
+branch. The port number is `4001` instead of `3001`.
 
-Go ahead and decide which line you like better, and delete the other
-line, plus the three marker lines. So basically, here just delete
-every line except the one line you want to keep.
+Go ahead and decide which line you like better, and delete the
+other line, plus the three marker lines. So basically, here
+just delete every line except the one line you want to keep.
 
 The last conflict in the file looks like:
 
 ```
 <<<<<<< HEAD
+Express is used in a lot of different projects.
 =======
-
-You could do all of this with just the simple `http` package,
-but it would take a lot longer...why wait?!? Go do awesome!
+Express can do a lot of things!
 >>>>>>> origin/develop
 ```
 
-...and I'm sure this is getting more familiar now, so either keep the
-new line and delete all the marker lines, or just delete everything
-to keep the version from `master`.
+...and I'm sure this is getting more familiar now, so either
+keep one of the new lines and delete all the marker lines,
+or just delete everything to not include either of these.
 
 ## check your work
 
