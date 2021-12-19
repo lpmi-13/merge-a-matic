@@ -27,7 +27,7 @@ give you some feedback on how you did.
 Then type `git merge origin/develop`.
 
 (NOTE: You could also type `git checkout develop`, then
-`git checkout master`, then `git merge develop` to merge
+`git checkout main`, then `git merge develop` to merge
 from a local copy of the `develop` branch that you set
 up on your machine, but this isn't necessary.)
 
@@ -56,8 +56,8 @@ git wants us to do, type `git status` and you should see output
 like this:
 
 ```
-On branch master
-Your branch is up to date with 'origin/master'.
+On branch main
+Your branch is up to date with 'origin/main'.
 
 You have unmerged paths.
   (fix conflicts and run "git commit")
@@ -112,7 +112,7 @@ The first thing to notice is the line right at the top:
 This tells us where the conflict starts, and also the branch it
 refers to. Here, `HEAD` refers to the place that our
 current branch is at, so it's basically the same as our local
-copy of the `master` branch.
+copy of the `main` branch.
 
 The next important line is 
 `=======`
@@ -126,7 +126,7 @@ The final interesting line is right near the bottom:
 
 This tells us where the conflict ends. This is a simple example
 since everything from the first marker line to the middle line is
-the version in `master`, and everything from the middle line to the
+the version in `main`, and everything from the middle line to the
 final line is the version in `develop`.
 
 So to resolve the conflict in this file, since the two files
