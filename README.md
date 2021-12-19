@@ -1,5 +1,7 @@
 # MERGE-A-MATIC 
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/lpmi-13/merge-a-matic)
+
 One of the difficult parts of collaboration is dealing with merge
 conflicts. This can happen, for example, when Person A alters
 a file (eg, `server.js`) on Person A's computer, and Person B also
