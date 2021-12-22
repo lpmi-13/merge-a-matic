@@ -1,10 +1,10 @@
 tasks:
-  - name: open a terminal
-    openMode: tab-after
   - name: show markdown readme
-    command: sleep 5 && open README.md
-    openMode: tab-before
-    
-ports:
-  - port: 8000
-    onOpen: open-preview
+    # this is a bit of a hack to make sure the VS code server is ready
+    command: sleep 3 && open README.md
+    openMode: tab-after
+
+vscode:
+  extensions:
+    # this lets us show a nice markdown preview by default instead of the raw file
+    - matt-rudge.auto-open-preview-panel@0.0.6
